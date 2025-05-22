@@ -9,7 +9,15 @@ import "./App.css";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { addDoc, collection, deleteDoc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import Message from "./Message";
 
 const auth = getAuth();
@@ -35,8 +43,8 @@ function App() {
         message,
         createdAt: Date.now(),
       });
-      getMessages();
       setMessage("");
+      getMessages();
       toast.success("Message Sent");
     } catch (error) {
       toast.error(error);
@@ -55,22 +63,24 @@ function App() {
       toast.error(error);
     }
   };
+  const getMessages = () => {
+    const messagesRef = collection(db, "messages");
+    const q = query(messagesRef, orderBy("createdAt", "asc"));
 
-  const getMessages = async () => {
-    try {
-      const msg = await getDocs(collection(db, "messages"));
-      const messages = msg.docs.map((doc) => ({
+    // Real-time listener
+    return onSnapshot(q, (snapshot) => {
+      const msg = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setMessages(messages);
-    } catch (error) {
-      toast.error(error);
-    }
+      setMessages(msg);
+    });
   };
 
   useEffect(() => {
-    getMessages();
+    const unsubscribe = getMessages();
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {

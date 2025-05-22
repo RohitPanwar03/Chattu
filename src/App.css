@@ -42,6 +42,10 @@
   overflow-y: scroll;
 }
 
+.messageContainer::-webkit-scrollbar {
+  display: none;
+}
+
 .msgbox {
   width: auto;
   margin: 0.5rem;

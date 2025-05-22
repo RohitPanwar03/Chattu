@@ -9,7 +9,7 @@ import "./App.css";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDocs } from "firebase/firestore";
 import Message from "./Message";
 
 const auth = getAuth();
@@ -35,6 +35,7 @@ function App() {
         message,
         createdAt: Date.now(),
       });
+      getMessages();
       setMessage("");
       toast.success("Message Sent");
     } catch (error) {
@@ -44,6 +45,9 @@ function App() {
 
   const handlelogout = async () => {
     try {
+      const msg = await getDocs(collection(db, "messages"));
+      const deletions = msg.docs.map((doc) => deleteDoc(doc.ref));
+      await Promise.all(deletions);
       await signOut(auth);
       setUser(null);
       toast.success("Logout Successfully");
@@ -66,14 +70,16 @@ function App() {
   };
 
   useEffect(() => {
+    getMessages();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
 
-    getMessages();
-
     return () => unsubscribe();
-  }, [messages]);
+  }, [user]);
 
   return (
     <>

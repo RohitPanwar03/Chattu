@@ -9,7 +9,8 @@ import "./App.css";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
+import Message from "./Message";
 
 const auth = getAuth();
 function App() {
@@ -51,10 +52,25 @@ function App() {
     }
   };
 
+  const getMessages = async () => {
+    try {
+      const msg = await getDocs(collection(db, "messages"));
+      const messages = msg.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMessages(messages);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+
+    getMessages();
 
     return () => unsubscribe();
   }, []);
@@ -67,7 +83,17 @@ function App() {
             <button className="btnSignout" onClick={handlelogout}>
               Logout
             </button>
-            <div className="messageContainer"></div>
+            <div className="messageContainer">
+              {messages &&
+                messages.map((msg) => (
+                  <Message
+                    key={msg.id}
+                    message={msg.message}
+                    user={msg.uid === user?.uid}
+                    photo={msg.photoURL}
+                  />
+                ))}
+            </div>
             <form className="messageForm" onSubmit={handleSubmit}>
               <div>
                 <input

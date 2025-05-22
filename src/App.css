@@ -1,42 +1,77 @@
-#root {
-  max-width: 1280px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box {
+  width: 50%;
+  height: 100%;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  background-color: rgb(245, 225, 245);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.btnSignout {
+  width: 100%;
+  padding: 0.7rem 0rem;
+  border: none;
+  font-size: 1.2rem;
+  color: white;
+  background-color: rgb(226, 59, 59);
+  cursor: pointer;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btnSignout:hover {
+  background-color: rgb(230, 21, 21);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.messageContainer {
+  width: 100%;
+  height: 85vh;
 }
 
-.card {
-  padding: 2em;
+.messageForm {
+  width: 100%;
 }
 
-.read-the-docs {
-  color: #888;
+.messageForm > div > input {
+  width: 80%;
+  border: none;
+  outline: none;
+  padding: 1rem 0.5rem;
+}
+
+.messageForm > div > button {
+  width: 20%;
+  border: none;
+  padding: 1rem 0.5rem;
+  color: white;
+  background-color: rgb(91, 91, 216);
+  cursor: pointer;
+}
+
+.googlBtn {
+  background-color: white;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  color: white;
+  background-color: rgb(91, 91, 216);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.googlBtn:hover {
+  background-color: rgb(58, 58, 213);
 }

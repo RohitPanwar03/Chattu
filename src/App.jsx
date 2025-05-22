@@ -73,7 +73,7 @@ function App() {
     getMessages();
 
     return () => unsubscribe();
-  }, []);
+  }, [messages]);
 
   return (
     <>
@@ -90,7 +90,7 @@ function App() {
                     key={msg.id}
                     message={msg.message}
                     user={msg.uid === user?.uid}
-                    photo={msg.photoURL}
+                    photo={msg?.photoURL}
                   />
                 ))}
             </div>

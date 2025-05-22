@@ -1,4 +1,5 @@
 const Message = ({ message, photo, user }) => {
+  console.log(photo);
   return (
     <div
       className="msgbox"
